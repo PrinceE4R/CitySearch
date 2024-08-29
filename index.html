@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Search</title>
+    <style>
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 100;
+        }
+
+        #search {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90vw;
+            height: 105vh;
+            border: none;
+            z-index: 50;
+            display: none; /* Hidden until loaded */
+        }
+
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: none; /* Hidden until loaded */
+        }
+    </style>
+</head>
+<body>
+    <iframe src="./loading.html" id="loading"></iframe>
+
+    <iframe src="./search bar/index.html" frameborder="0" id="search"></iframe>
+    <iframe src="./back/index.html" frameborder="0" id="background"></iframe>
+
+    <script>
+        const loadingIframe = document.getElementById('loading');
+        const searchIframe = document.getElementById('search');
+        const backgroundIframe = document.getElementById('background');
+
+        let searchLoaded = false;
+        let backgroundLoaded = false;
+
+        searchIframe.onload = () => {
+            searchLoaded = true;
+            checkIfLoaded();
+        };
+
+        backgroundIframe.onload = () => {
+            backgroundLoaded = true;
+            checkIfLoaded();
+        };
+
+        function checkIfLoaded() {
+            if (searchLoaded && backgroundLoaded) {
+                loadingIframe.style.display = 'none';  // Hide the loading iframe
+                searchIframe.style.display = 'block';  // Show the search iframe
+                backgroundIframe.style.display = 'block';  // Show the background iframe
+            }
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.origin === window.location.origin) {
+                if (event.data && event.data.action === 'navigate') {
+                    window.location.href = event.data.url;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        @keyframes moveClouds {
+            from { background-position: 100% 0; }
+            to { background-position: -100% 0; }
+        }
+
+        .background-start {
+            position: absolute;
+            right: 0;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .background {
+            position: absolute;
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+            background-position: top right;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .clouds {
+            position: absolute;
+            top: 25px;
+            right: 0px;
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+            background-position: top right;
+            width: 100%;
+            height: 28%;
+            z-index: 1;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: moveClouds 400s linear infinite;
+        }
+
+        @media screen and (max-width: 768px) {
+            .clouds {
+                animation: moveClouds 90s linear infinite;
+            }
+        }
+
+        .lfcs, .rfcs {
+            position: absolute;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: auto 100%;
+        }
+
+        .lfcs {
+            right: 0;
+            bottom: 10%;
+            z-index: 4;
+        }
+
+        .rfcs {
+            left: 0;
+            bottom: 15%;
+            z-index: 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="background" id="backgroundCity"></div>
+    <img class="background-start" src="">
+    <div class="clouds"></div>
+    <div class="rfcs"></div>
+    <div class="lfcs"></div>
+
+    <script>
+        function changeBackgroundBasedOnTime() {
+            const backgroundCity = document.getElementById('backgroundCity');
+            const backgroundStart = document.querySelector('.background-start');
+            const clouds = document.querySelector('.clouds');
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const totalMinutes = hours * 60 + minutes;
+
+            if (totalMinutes >= 241 && totalMinutes <= 420) 
+            { // 4:01 AM to 7:00 AM
+                backgroundStart.src = "./images/morning/City.svg";
+                backgroundCity.style.backgroundImage = "url('./images/morning/CityWithoutSun.svg')";
+                clouds.style.backgroundImage = "url('./images/morning/Clouds.svg')";
+            } 
+            else if (totalMinutes >= 421 && totalMinutes <= 990) 
+            { // 7:01 AM to 4:30 PM
+                backgroundStart.src = "./images/day/City.svg";
+                backgroundCity.style.backgroundImage = "url('./images/day/CityWithoutSun.svg')";
+                clouds.style.backgroundImage = "url('./images/day/Clouds.svg')";
+            } 
+            else if (totalMinutes >= 991 && totalMinutes <= 1110) 
+            { // 4:31 PM to 7:30 PM
+                backgroundStart.src = "./images/evening/City.svg";
+                backgroundCity.style.backgroundImage = "url('./images/evening/CityWithoutSun.svg')";
+                clouds.style.backgroundImage = "url('./images/evening/Clouds.svg')";
+            } 
+            else 
+            { // 7:31 PM to 4:00 AM
+                backgroundStart.src = "./images/night/City.svg";
+                backgroundCity.style.backgroundImage = "url('./images/night/CityWithoutMoon.svg')";
+                clouds.style.backgroundImage = "url('./images/night/Clouds.svg')";
+            }
+        }
+
+        // Call the function when the page loads
+        window.onload = changeBackgroundBasedOnTime;
+
+        // Optionally, update the background every minute
+        setInterval(changeBackgroundBasedOnTime, 1000);
+    </script>
+</body>
+</html>
